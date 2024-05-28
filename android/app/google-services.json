@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "234211417130",
+    "firebase_url": "https://music-test-6d11b-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "music-test-6d11b",
+    "storage_bucket": "music-test-6d11b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:234211417130:android:a5c301187c16219cfd3753",
+        "android_client_info": {
+          "package_name": "com.android.application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvFdk0IzRghdxwKaZb2qnSz927PALjw6s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:234211417130:android:e741ee3820dce52cfd3753",
+        "android_client_info": {
+          "package_name": "com.example.music_test2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvFdk0IzRghdxwKaZb2qnSz927PALjw6s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
