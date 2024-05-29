@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'SigninScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:music_test2/Themes/theme_provider.dart';
 
@@ -23,10 +24,20 @@ class _SignupscreenState extends State<Signupscreen> {
       _circular = true;
     });
     try {
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final UserCredential credential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+
+      // Save user data in Firestore
+      await FirebaseFirestore.instance.collection('users').doc(credential.user!.uid).set({
+        'email': _emailController.text.trim(),
+        'displayName': 'Default Name', // Default value
+        'photoUrl': 'https://example.com/default-photo.jpg', // Default value
+        'createdOn': FieldValue.serverTimestamp(),
+        'gender': '', // Default value
+      });
+
       // Navigate to the sign-in screen after successful account creation
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Signinscreen()));
     } on FirebaseAuthException catch (e) {

@@ -16,6 +16,7 @@ class _LibraryscreenState extends State<Libraryscreen> {
       appBar: AppBar(title: Text("Library"),
       automaticallyImplyLeading: false,
       ),
+
       bottomNavigationBar: CommonNavBar(
         currentIndex: _currentIndex,
         onTap: (index) {

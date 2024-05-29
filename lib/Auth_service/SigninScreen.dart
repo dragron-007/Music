@@ -41,21 +41,6 @@ class _SigninscreenState extends State<Signinscreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Align(
-            alignment: Alignment.topRight,
-            child: TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor: theme.colorScheme.background,
-              ),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Homescreen()));
-              },
-              child: Text(
-                "Skip",
-                style: TextStyle(color: theme.colorScheme.primary),
-              ),
-            ),
-          ),
           _inputField("Enter your Email", false, _emailController, theme),
           _inputField("Enter your Password", true, _passwordController, theme),
           _button("Signin", SigninUserWithEmailAndPassword, theme),
@@ -68,7 +53,7 @@ class _SigninscreenState extends State<Signinscreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Hello", style: textTheme.bodyLarge),
+              Text("Hello  ", style: textTheme.bodyLarge),
               Text("Hi", style: textTheme.bodyLarge),
             ],
           ),
