@@ -1,69 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'song.dart';
 
 class PlaylistProvider extends ChangeNotifier {
-  final List<Song> _playlist = [
-    // Song(
-    //   songName: "Desi Kalakaar",
-    //   artistName: 'Honey Singh',
-    //   audioPath: 'music/Desi Kalakaar.mp3',
-    // ),
-    // Song(
-    //   songName: "All Black",
-    //   artistName: 'Honey Singh',
-    //   audioPath: 'music/All Black.mp3',
-    // ),
-    // Song(
-    //   songName: "Chandigarh Ka Chokra",
-    //   artistName: 'Honey Singh',
-    //   audioPath: 'music/Chandigarh Ka Chokra.mp3',
-    // ),
-    // Song(
-    //   songName: "Expert Jatt",
-    //   artistName: 'Honey Singh',
-    //   audioPath: 'music/Expert Jatt.mp3',
-    // ),
-    // Song(
-    //   songName: "Love Dose",
-    //   artistName: 'Honey Singh',
-    //   audioPath: 'music/Love Dose.mp3',
-    // ),
-    // Song(
-    //   songName: "Proper Patola",
-    //   artistName: 'Honey Singh',
-    //   audioPath: 'music/Proper Patola.mp3',
-    // ),
-    // Song(
-    //   songName: "Horn Bloww",
-    //   artistName: 'Honey Singh',
-    //   audioPath: 'music/Hornn Blow.mp3',
-    // ),
-    // Song(
-    //   songName: "Admiring You",
-    //   artistName: 'Honey Singh',
-    //   audioPath: 'music/Admiring You.mp3',
-    // ),
-  ];
-
+  List<Song> _playlist = [];
   int? _currentSongIndex;
-
   final AudioPlayer _audioPlayer = AudioPlayer();
-
   Duration _currentDuration = Duration.zero;
   Duration _totalDuration = Duration.zero;
+  bool _isPlaying = false;
+  bool _isLoading = false;
 
   PlaylistProvider() {
+    fetchSongs();
     listenToDuration();
   }
 
-  bool _isPlaying = false;
+  Future<void> fetchSongs() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('songs').get();
+      _playlist = snapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        print('Fetched song: ${data['title']} by ${data['artist']}');  // Debugging line
+        return Song(
+          songName: data['title'],
+          artistName: data['artist'],
+          audioPath: data['audioUrl'],  // Ensure this URL is accessible and correctly formatted
+        );
+      }).toList();
+      print('Total fetched songs: ${_playlist.length}');  // Debugging line
+    } catch (e) {
+      print("Error fetching songs: $e");
+    }
+
+    _isLoading = false;
+    notifyListeners();
+  }
 
   void play() async {
     if (_currentSongIndex == null) return;
     final String path = _playlist[_currentSongIndex!].audioPath;
     await _audioPlayer.stop();
-    await _audioPlayer.play(AssetSource(path));
+    await _audioPlayer.play(UrlSource(path));  // Use UrlSource for URLs
     _isPlaying = true;
     notifyListeners();
   }
@@ -134,6 +116,7 @@ class PlaylistProvider extends ChangeNotifier {
   bool get isPlaying => _isPlaying;
   Duration get currentDuration => _currentDuration;
   Duration get totalDuration => _totalDuration;
+  bool get isLoading => _isLoading;
 
   set currentSongIndex(int? newIndex) {
     _currentSongIndex = newIndex;

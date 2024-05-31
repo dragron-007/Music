@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';  // Import Firestore package
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as Path;
 
@@ -16,6 +16,7 @@ class UploadSong extends StatefulWidget {
 class _UploadSongState extends State<UploadSong> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;  // Firestore instance
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String _title = '';
@@ -44,14 +45,25 @@ class _UploadSongState extends State<UploadSong> {
       }
 
       // File upload task
-      Reference ref = _storage.ref().child('songs/${Path.basename(_audioFile!.path!)}');
+      Reference ref = _storage.ref().child('songs/${Path.basename(_audioFile!.path)}');
       UploadTask uploadTask = ref.putFile(_audioFile!);
       TaskSnapshot taskSnapshot = await uploadTask;
 
       // Get download URL
       String audioUrl = await taskSnapshot.ref.getDownloadURL();
 
-      // Save song metadata to Firestore or perform other actions with audioUrl
+      // Save song metadata to Firestore
+      await _firestore.collection('songs').add({
+        'title': _title,
+        'artist': _artist,
+        'album': _album,
+        'duration': _duration,
+        'genre': _genre,
+        'audioUrl': audioUrl,
+        'imageUrl': _imageUrl,  // Optional
+        'uploadedAt': Timestamp.now(),
+        'uploadedBy': _auth.currentUser?.uid,
+      });
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Song uploaded successfully!')),
@@ -155,7 +167,7 @@ class _UploadSongState extends State<UploadSong> {
                 child: Text('Pick Audio File'),
               ),
               SizedBox(height: 10),
-              if (_audioFile != null) Text('Selected Audio: ${Path.basename(_audioFile!.path!)}'),
+              if (_audioFile != null) Text('Selected Audio: ${Path.basename(_audioFile!.path)}'),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _submitForm,

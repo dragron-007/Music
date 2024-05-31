@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:music_test2/Screens/SettingsScreen.dart';
-import 'package:flutter/cupertino.dart';
-import 'SongScreen.dart';
 import 'package:music_test2/model/playlist_provider.dart';
 import 'package:music_test2/model/song.dart';
 import 'package:provider/provider.dart';
+import 'SongScreen.dart';
 import 'package:music_test2/Common_Widgets/CommonNavbar.dart';
 import 'package:music_test2/Common_Widgets/DrawerWidget.dart';
+// import 'Common_Widgets/CommonNavbar.dart';
+// import 'Common_Widgets/DrawerWidget.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -17,19 +17,21 @@ class Homescreen extends StatefulWidget {
 
 class _HomescreenState extends State<Homescreen> {
   int _currentIndex = 0;
-  late final dynamic playlistProvider;
+  late final PlaylistProvider playlistProvider;
 
   @override
   void initState() {
     super.initState();
-
     playlistProvider = Provider.of<PlaylistProvider>(context, listen: false);
+    playlistProvider.fetchSongs();  // Ensure songs are fetched on initialization
   }
 
-  void goTosong(int songIndex) {
+  void goToSong(int songIndex) {
     playlistProvider.currentSongIndex = songIndex;
-
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SongPage()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SongPage()),
+    );
   }
 
   @override
@@ -41,22 +43,24 @@ class _HomescreenState extends State<Homescreen> {
       drawer: DrawerWidget(),
       body: Consumer<PlaylistProvider>(
         builder: (context, value, child) {
-          // get the playlist
           final List<Song> playlist = value.playlist;
+          if (value.isLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-          // return list view UI
+          if (playlist.isEmpty) {
+            return Center(child: Text('No songs available'));
+          }
+
           return ListView.builder(
             itemCount: playlist.length,
             itemBuilder: (context, index) {
-              // get individual song
               final Song song = playlist[index];
-              // return list tile UI
               return ListTile(
                 title: Text(song.songName),
                 subtitle: Text(song.artistName),
-                // leading: Image.asset(song.albumArtImagePath),
-                onTap: () => goTosong(index),
-              ); // ListTile
+                onTap: () => goToSong(index),
+              );
             },
           );
         },
