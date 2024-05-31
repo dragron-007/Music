@@ -4,46 +4,46 @@ import 'song.dart';
 
 class PlaylistProvider extends ChangeNotifier {
   final List<Song> _playlist = [
-    Song(
-      songName: "Desi Kalakaar",
-      artistName: 'Honey Singh',
-      audioPath: 'music/Desi Kalakaar.mp3',
-    ),
-    Song(
-      songName: "All Black",
-      artistName: 'Honey Singh',
-      audioPath: 'music/All Black.mp3',
-    ),
-    Song(
-      songName: "Chandigarh Ka Chokra",
-      artistName: 'Honey Singh',
-      audioPath: 'music/Chandigarh Ka Chokra.mp3',
-    ),
-    Song(
-      songName: "Expert Jatt",
-      artistName: 'Honey Singh',
-      audioPath: 'music/Expert Jatt.mp3',
-    ),
-    Song(
-      songName: "Love Dose",
-      artistName: 'Honey Singh',
-      audioPath: 'music/Love Dose.mp3',
-    ),
-    Song(
-      songName: "Proper Patola",
-      artistName: 'Honey Singh',
-      audioPath: 'music/Proper Patola.mp3',
-    ),
-    Song(
-      songName: "Horn Bloww",
-      artistName: 'Honey Singh',
-      audioPath: 'music/Hornn Blow.mp3',
-    ),
-    Song(
-      songName: "Admiring You",
-      artistName: 'Honey Singh',
-      audioPath: 'music/Admiring You.mp3',
-    ),
+    // Song(
+    //   songName: "Desi Kalakaar",
+    //   artistName: 'Honey Singh',
+    //   audioPath: 'music/Desi Kalakaar.mp3',
+    // ),
+    // Song(
+    //   songName: "All Black",
+    //   artistName: 'Honey Singh',
+    //   audioPath: 'music/All Black.mp3',
+    // ),
+    // Song(
+    //   songName: "Chandigarh Ka Chokra",
+    //   artistName: 'Honey Singh',
+    //   audioPath: 'music/Chandigarh Ka Chokra.mp3',
+    // ),
+    // Song(
+    //   songName: "Expert Jatt",
+    //   artistName: 'Honey Singh',
+    //   audioPath: 'music/Expert Jatt.mp3',
+    // ),
+    // Song(
+    //   songName: "Love Dose",
+    //   artistName: 'Honey Singh',
+    //   audioPath: 'music/Love Dose.mp3',
+    // ),
+    // Song(
+    //   songName: "Proper Patola",
+    //   artistName: 'Honey Singh',
+    //   audioPath: 'music/Proper Patola.mp3',
+    // ),
+    // Song(
+    //   songName: "Horn Bloww",
+    //   artistName: 'Honey Singh',
+    //   audioPath: 'music/Hornn Blow.mp3',
+    // ),
+    // Song(
+    //   songName: "Admiring You",
+    //   artistName: 'Honey Singh',
+    //   audioPath: 'music/Admiring You.mp3',
+    // ),
   ];
 
   int? _currentSongIndex;
